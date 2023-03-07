@@ -12,6 +12,8 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -39,9 +41,16 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      setNotificationMessage(`User ${user.name} logged in`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 2000)
     }
     catch (exception) {
-      console.log('login error:' + exception)
+      setErrorMessage('wrong username or password')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 2000)
     }
   }
 
@@ -50,9 +59,16 @@ const App = () => {
     try {
       window.localStorage.removeItem('loggedBlogappUser')
       setUser(null)
+      setNotificationMessage(`User ${user.name} logged out`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 2000)
     }
     catch (exception) {
-      console.log('logout error:' + exception)
+      setErrorMessage(`User ${user.name} logged failed`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 2000)
     }
   }
 
@@ -65,15 +81,57 @@ const App = () => {
         url: url
       })
       setBlogs(blogs.concat(result))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      setNotificationMessage(`Blog ${result.title} added`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 2000)
     }
     catch (exception) {
-      console.log('Save new error:' + exception)
+      setErrorMessage(`Saving blog ${title} failed.`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 2000)
     }
+  }
+
+  const errorStyle = {
+    color: 'red',
+    fontSize: 20,
+    padding: 5,
+    marginBottom: 10,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: 'red',
+    borderRadius: 5,
+    backgroundColor: 'lightGray'
+  }
+
+  const notificationStyle = {
+    color: 'green',
+    fontSize: 20,
+    padding: 5,
+    marginBottom: 10,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: 'green',
+    borderRadius: 5,
+    backgroundColor: 'lightGray'
   }
 
   return (
     <div>
       <h2>blogs</h2>
+      {
+        errorMessage &&
+        <div style={errorStyle}>{errorMessage}</div>
+      }
+      {
+        notificationMessage &&
+        <div style={notificationStyle}>{notificationMessage}</div>
+      }
       {
         user === null &&
           <div>
