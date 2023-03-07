@@ -9,6 +9,9 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -20,6 +23,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      blogService.setToken(user.token)
       setUser(user)
     }
   }, [])
@@ -31,6 +35,7 @@ const App = () => {
         username, password
       })
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -51,6 +56,21 @@ const App = () => {
     }
   }
 
+  const handleSaveNew = async (event) => {
+    event.preventDefault()
+    try {
+      const result = await blogService.create({
+        title: title,
+        author: author,
+        url: url
+      })
+      setBlogs(blogs.concat(result))
+    }
+    catch (exception) {
+      console.log('Save new error:' + exception)
+    }
+  }
+
   return (
     <div>
       <h2>blogs</h2>
@@ -60,7 +80,7 @@ const App = () => {
             <h2>Log in to application</h2>
             <form onSubmit={handleLogin}>
               <div>
-              username
+                username
                 <input
                   type="text"
                   value={username}
@@ -69,7 +89,7 @@ const App = () => {
                 />
               </div>
               <div>
-              password
+                password
                 <input
                   type="password"
                   value={password}
@@ -87,6 +107,40 @@ const App = () => {
             <div>{user.name} logged in
               <form onSubmit={handleLogout}>
                 <button type="submit">logout</button>
+              </form>
+            </div>
+
+            <div>
+              <h2>create new</h2>
+              <form onSubmit={handleSaveNew}>
+                <div>
+                  title:
+                  <input
+                    type="text"
+                    value={title}
+                    name="title"
+                    onChange={({ target }) => setTitle(target.value)}
+                  />
+                </div>
+                <div>
+                author:
+                  <input
+                    type="text"
+                    value={author}
+                    name="author"
+                    onChange={({ target }) => setAuthor(target.value)}
+                  />
+                </div>
+                <div>
+                url:
+                  <input
+                    type="text"
+                    value={url}
+                    name="url"
+                    onChange={({ target }) => setUrl(target.value)}
+                  />
+                </div>
+                <button type="submit">create</button>
               </form>
             </div>
 
