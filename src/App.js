@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import LoginForm from './components/LoginForm'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
@@ -51,6 +52,13 @@ const App = () => {
       })
   }
 
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value)
+  }
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value)
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -107,36 +115,19 @@ const App = () => {
       }
       {
         user === null &&
-          <div>
-            <h2>Log in to application</h2>
-            <form onSubmit={handleLogin}>
-              <div>
-                username
-                <input
-                  type="text"
-                  value={username}
-                  name="Username"
-                  onChange={({ target }) => setUsername(target.value)}
-                />
-              </div>
-              <div>
-                password
-                <input
-                  type="password"
-                  value={password}
-                  name="Password"
-                  onChange={({ target }) => setPassword(target.value)}
-                />
-              </div>
-              <button type="submit">login</button>
-            </form>
-          </div>
+        <LoginForm
+          username={username}
+          password={password}
+          handleLogin={handleLogin}
+          handleUsernameChange={handleUsernameChange}
+          handlePasswordChange={handlePasswordChange}
+        ></LoginForm>
       }
       {
         user &&
           <>
             <div>{user.name} logged in
-              <form onSubmit={handleLogout}>
+              <form onSubmit={handleLogout} style={{display: 'inline'}}>
                 <button type="submit">logout</button>
               </form>
             </div>
