@@ -44,8 +44,28 @@ const App = () => {
           setNotificationMessage(null)
         }, 2000)
       })
-      .catch(exception => {
+      .catch(() => {
         setErrorMessage(`Saving blog ${blogObject.title} failed.`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 2000)
+      })
+  }
+
+  const updateBlog = (blogObject) => {
+    blogService
+      .update(blogObject)
+      .then(
+        returnedBlog => {
+          setBlogs(blogs.map(blog => blog.id !==returnedBlog.id ? blog : returnedBlog))
+          setNotificationMessage(`Blog ${returnedBlog.title} updated`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 2000)
+        }
+      )
+      .catch(() => {
+        setErrorMessage(`Updating blog ${blogObject.title} failed.`)
         setTimeout(() => {
           setErrorMessage(null)
         }, 2000)
@@ -127,7 +147,7 @@ const App = () => {
         user &&
           <>
             <div>{user.name} logged in
-              <form onSubmit={handleLogout} style={{display: 'inline'}}>
+              <form onSubmit={handleLogout} style={ { display: 'inline' } }>
                 <button type="submit">logout</button>
               </form>
             </div>
@@ -136,7 +156,7 @@ const App = () => {
             </Togglable>
             <div>
               {blogs.map(blog =>
-                <Blog key={blog.id} blog={blog} />
+                <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
               )}
             </div>
           </>
