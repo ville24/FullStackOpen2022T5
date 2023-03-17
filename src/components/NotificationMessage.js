@@ -1,4 +1,11 @@
+import PropTypes from 'prop-types'
+
 const notificationMessage = (props) => {
+
+  notificationMessage.propTypes = {
+    notificationMessage: PropTypes.string.isRequired
+  }
+
   const notificationStyle = {
     color: 'green',
     fontSize: 20,

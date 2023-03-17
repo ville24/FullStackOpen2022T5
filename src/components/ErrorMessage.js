@@ -1,4 +1,11 @@
-const Errormessage = (props) => {
+import PropTypes from 'prop-types'
+
+const ErrorMessage = (props) => {
+
+  ErrorMessage.propTypes = {
+    errorMessage: PropTypes.string.isRequired
+  }
+
   const errorStyle = {
     color: 'red',
     fontSize: 20,
@@ -14,4 +21,4 @@ const Errormessage = (props) => {
     <div style={errorStyle}>{props.errorMessage}</div>
   )
 }
-export default Errormessage
+export default ErrorMessage
