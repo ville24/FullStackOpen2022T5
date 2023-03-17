@@ -72,6 +72,24 @@ const App = () => {
       })
   }
 
+  const removeBlog = (id) => {
+    blogService
+      .remove(id)
+      .then(() => {
+        setBlogs(blogs.filter(blog => blog.id !== id && blog))
+        setNotificationMessage('Blog deleted')
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 2000)
+      })
+      .catch(() => {
+        setErrorMessage('Deleting blog failed.')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 2000)
+      })
+  }
+
   const handleUsernameChange = (event) => {
     setUsername(event.target.value)
   }
@@ -156,7 +174,7 @@ const App = () => {
             </Togglable>
             <div>
               {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-                <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+                <Blog key={blog.id} blog={blog} user={user} updateBlog={updateBlog} removeBlog={removeBlog} />
               )}
             </div>
           </>
