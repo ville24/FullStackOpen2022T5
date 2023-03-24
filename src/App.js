@@ -166,7 +166,7 @@ const App = () => {
           <>
             <div>{user.name} logged in
               <form onSubmit={handleLogout} style={ { display: 'inline' } }>
-                <button type="submit">logout</button>
+                <button type="submit" id='logoutbutton'>logout</button>
               </form>
             </div>
             <Togglable buttonLabel="new blog" ref={blogFormRef}>

@@ -18,7 +18,7 @@ const ErrorMessage = (props) => {
     backgroundColor: 'lightGray'
   }
   return (
-    <div style={errorStyle}>{props.errorMessage}</div>
+    <div style={errorStyle} className='error'>{props.errorMessage}</div>
   )
 }
 export default ErrorMessage

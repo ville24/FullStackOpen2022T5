@@ -18,7 +18,7 @@ const notificationMessage = (props) => {
     backgroundColor: 'lightGray'
   }
   return (
-    <div style={notificationStyle}>{props.notificationMessage}</div>
+    <div style={notificationStyle} className='info'>{props.notificationMessage}</div>
   )
 }
 export default notificationMessage
